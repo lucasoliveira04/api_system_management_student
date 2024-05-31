@@ -34,6 +34,6 @@ public class DataUsers {
     @OneToOne(mappedBy = "user")
     private Register register;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "id_user")
     private List<Login> logins;
 }

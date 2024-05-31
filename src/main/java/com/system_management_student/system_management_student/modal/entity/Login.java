@@ -15,7 +15,7 @@ public class Login {
     @Column(name = "date_login")
     private Date dateLogin;
 
-    @ManyToOne
-    @JoinColumn(name = "id_user", referencedColumnName = "id")
-    private DataUsers user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_user")
+    private DataUsers id_user;
 }
