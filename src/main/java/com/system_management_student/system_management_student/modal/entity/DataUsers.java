@@ -27,7 +27,7 @@ public class DataUsers {
     private String cpf;
 
     @Column(name = "date_of_birth")
-    private Date dateOfBirth;
+    private String dateOfBirth;
 
     @OneToMany(mappedBy = "student")
     private List<DataStudents> students;
