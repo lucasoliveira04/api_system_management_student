@@ -1,7 +1,9 @@
 package com.system_management_student.system_management_student.modal.dto.ViewData;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.system_management_student.system_management_student.modal.entity.Register;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Value;
 
@@ -12,6 +14,8 @@ import java.util.Date;
  * DTO for {@link com.system_management_student.system_management_student.modal.entity.Register}
  */
 @Data
+@Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RegisterDto implements Serializable {
     private Integer id;
@@ -20,11 +24,11 @@ public class RegisterDto implements Serializable {
     private Date dateRegister;
 
     public static RegisterDto fromEntity(Register register){
-        RegisterDto dto = new RegisterDto();
-        dto.setId(register.getId());
-        dto.setEmail(register.getEmail());
-        dto.setPassword(register.getPassword());
-        dto.setDateRegister(register.getDateRegister());
-        return dto;
+        return RegisterDto.builder()
+                .id(register.getId())
+                .email(register.getEmail())
+                .password(register.getPassword())
+                .dateRegister(register.getDateRegister())
+                .build();
     }
 }
