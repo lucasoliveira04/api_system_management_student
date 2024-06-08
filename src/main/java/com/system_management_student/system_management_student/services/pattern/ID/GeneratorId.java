@@ -27,6 +27,8 @@ public class GeneratorId {
             generator = new TypesIdGenerator.IdStudent();
         } else if (type.equals("teacher")) {
             generator = new TypesIdGenerator.IdTeacher();
+        } else if (type.equals("register")) {
+            generator = new TypesIdGenerator.IdRegister();
         } else {
             return Messages.ERROR_INVALID_TYPE;
         }
@@ -60,6 +62,20 @@ class TypesIdGenerator {
                 return gerId.randomIdStudent();
             }
             return Messages.ERROR_INVALID_TYPE_STUDENT;
+        }
+    }
+
+    static class IdRegister implements IGeneratorId {
+
+        @Override
+        public String generator(String type) {
+            Generator gerId = new Generator();
+            String verificType = "register";
+
+            if (verificType.equals(type)) {
+                return gerId.randomIdRegister();
+            }
+            return Messages.ERROR_INVALID_TYPE_REGISTER;
         }
     }
 
@@ -109,6 +125,16 @@ class Generator {
         return stringBuilder.toString();
     }
 
+    public String randomIdRegister(){
+        Random rand = new Random();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < 8; i++) {
+            int digit = rand.nextInt(9) + 1;
+            stringBuilder.append(digit);
+        }
+        return stringBuilder.toString();
+    }
+
     /**
      * Gera um ID aleatório para um professor.
      *
@@ -132,6 +158,7 @@ class Messages {
     public static final String ERROR_INVALID_TYPE = "Erro. Tipo inválido";
     public static final String ERROR_INVALID_TYPE_STUDENT = "Erro. Tipo inválido para student";
     public static final String ERROR_INVALID_TYPE_TEACHER = "Erro. Tipo inválido para teacher";
+    public static final String ERROR_INVALID_TYPE_REGISTER = "Erro. Tipo inválido para register";
 }
 
 interface IGeneratorId {
