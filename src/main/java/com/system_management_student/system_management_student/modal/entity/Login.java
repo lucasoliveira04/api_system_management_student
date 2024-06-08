@@ -3,6 +3,7 @@ package com.system_management_student.system_management_student.modal.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -10,10 +11,10 @@ import java.util.Date;
 public class Login {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
 
     @Column(name = "date_login")
-    private Date dateLogin;
+    private LocalDateTime dateLogin;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user")

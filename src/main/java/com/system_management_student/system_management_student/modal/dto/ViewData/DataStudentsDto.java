@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.Value;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -18,7 +19,7 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DataStudentsDto implements Serializable {
-    private Integer id;
+    private Long id;
     private Double nota_1;
     private Double nota_2;
     private Double nota_3;
@@ -26,7 +27,7 @@ public class DataStudentsDto implements Serializable {
     private Double nota_5;
     private Double mean_result_final;
     private String result;
-    private Date date_insert_nota;
+    private LocalDateTime date_insert_nota;
 
     public static DataStudentsDto fromEntity(DataStudents students){
         return DataStudentsDto.builder()
