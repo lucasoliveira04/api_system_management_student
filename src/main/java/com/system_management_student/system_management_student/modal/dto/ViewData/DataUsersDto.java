@@ -7,8 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +23,7 @@ public class DataUsersDto implements Serializable {
     private String email;
     private String rg;
     private String cpf;
-    private Date dateOfBirth;
+    private String dateOfBirth;
     private List<DataStudentsDto> dataStudentsDto;
     private List<LoginDto> loginDtos;
     private RegisterDto registerDto;

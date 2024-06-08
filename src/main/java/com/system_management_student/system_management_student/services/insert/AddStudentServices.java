@@ -54,7 +54,10 @@ public class AddStudentServices {
         register.setId(Long.valueOf(geratorId.MainGenerator("student")));
         register.setEmail(dto.getEmail());
         register.setDateRegister(LocalDateTime.now());
-        register.setPassword(dto.getRegisterDto().getPassword());
+
+        String password = dto.getDateOfBirth() + dto.getName() + dto.getId();
+
+        register.setPassword(password);
         return register;
     }
 }
