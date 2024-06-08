@@ -3,6 +3,7 @@ package com.system_management_student.system_management_student.modal.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -11,7 +12,6 @@ import java.util.List;
 @Data
 public class DataUsers {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(name = "name")
