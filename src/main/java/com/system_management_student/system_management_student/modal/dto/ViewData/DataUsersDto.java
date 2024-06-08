@@ -31,28 +31,28 @@ public class DataUsersDto implements Serializable {
     private RegisterDto registerDto;
 
     public static DataUsersDto fromEntity(DataUsers dataUsers){
-       return DataUsersDto.builder()
-               .id(dataUsers.getId())
-               .name(dataUsers.getName())
-               .email(dataUsers.getEmail())
-               .rg(dataUsers.getRg())
-               .cpf(dataUsers.getCpf())
-               .dateOfBirth(dataUsers.getDateOfBirth())
+        return DataUsersDto.builder()
+                .id(dataUsers.getId())
+                .name(dataUsers.getName())
+                .email(dataUsers.getEmail())
+                .rg(dataUsers.getRg())
+                .cpf(dataUsers.getCpf())
+                .dateOfBirth(dataUsers.getDateOfBirth())
 
-               .registerDto(dataUsers.getRegister() != null ?
-                       RegisterDto.fromEntity(dataUsers.getRegister()) : null)
+                .registerDto(dataUsers.getRegister() != null ?
+                        RegisterDto.fromEntity(dataUsers.getRegister()) : null)
 
-               .dataStudentsDto(dataUsers.getStudents() != null ?
-                       dataUsers.getStudents()
-                               .stream()
-                               .map(DataStudentsDto::fromEntity)
-                               .collect(Collectors.toList()) : null)
+                .dataStudentsDto(dataUsers.getStudents() != null ?
+                        dataUsers.getStudents()
+                                .stream()
+                                .map(DataStudentsDto::fromEntity)
+                                .collect(Collectors.toList()) : null)
 
-               .loginDtos(dataUsers.getLogins() != null ?
-                       dataUsers.getLogins()
-                               .stream()
-                               .map(LoginDto::fromLoginDto)
-                               .collect(Collectors.toList()) : null)
-               .build();
+                .loginDtos(dataUsers.getLogins() != null ?
+                        dataUsers.getLogins()
+                                .stream()
+                                .map(LoginDto::fromLoginDto)
+                                .collect(Collectors.toList()) : null)
+                .build();
     }
 }
