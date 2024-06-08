@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.Value;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -18,10 +19,10 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RegisterDto implements Serializable {
-    private Integer id;
+    private Long id;
     private String email;
     private String password;
-    private Date dateRegister;
+    private LocalDateTime dateRegister;
 
     public static RegisterDto fromEntity(Register register){
         return RegisterDto.builder()

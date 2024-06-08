@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -17,8 +18,8 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LoginDto implements Serializable {
-    private Integer id;
-    private Date dateLogin;
+    private Long id;
+    private LocalDateTime dateLogin;
 
     public static LoginDto fromLoginDto(Login loginDto) {
         return LoginDto.builder()
