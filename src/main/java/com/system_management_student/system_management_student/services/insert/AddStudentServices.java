@@ -55,7 +55,9 @@ public class AddStudentServices {
         register.setEmail(dto.getEmail());
         register.setDateRegister(LocalDateTime.now());
 
-        String password = dto.getDateOfBirth() + dto.getName() + dto.getId();
+        String dateOfBirthWithouthyphes = dto.getDateOfBirth().replace("-", "");
+        String nameWithoutSpaces = dto.getName().replace(" ", "");
+        String password = dateOfBirthWithouthyphes + nameWithoutSpaces.toLowerCase();
 
         register.setPassword(password);
         return register;
