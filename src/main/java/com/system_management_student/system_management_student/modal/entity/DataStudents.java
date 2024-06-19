@@ -10,7 +10,6 @@ import java.util.Date;
 @Data
 public class DataStudents {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private Double nota_1;
@@ -21,6 +20,8 @@ public class DataStudents {
     private Double mean_result_final;
     private String result;
     private LocalDateTime date_insert_nota;
+    private int bimestre;
+    private Integer ano;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_student")

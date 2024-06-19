@@ -28,6 +28,10 @@ public class DataStudentsDto implements Serializable {
     private Double mean_result_final;
     private String result;
     private LocalDateTime date_insert_nota;
+    private Long studentId;
+    private int bimestre;
+    private Integer ano;
+
 
     public static DataStudentsDto fromEntity(DataStudents students){
         return DataStudentsDto.builder()
@@ -40,6 +44,8 @@ public class DataStudentsDto implements Serializable {
                 .mean_result_final(students.getMean_result_final())
                 .result(students.getResult())
                 .date_insert_nota(students.getDate_insert_nota())
+                .bimestre(students.getBimestre())
+                .ano(students.getAno())
                 .build();
     }
 }
