@@ -5,11 +5,9 @@ import com.system_management_student.system_management_student.modal.dto.ViewDat
 import com.system_management_student.system_management_student.services.insert.AddNotaStudent;
 import com.system_management_student.system_management_student.services.insert.AddStudentServices;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins= "*", allowedHeaders= "*")
 @RestController
 @RequestMapping("/api/")
 public class StudentController {
