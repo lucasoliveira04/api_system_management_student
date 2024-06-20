@@ -6,4 +6,10 @@ public class CustomExceptions {
             super(message);
         }
     }
+
+    public static class DuplicateFieldException  extends RuntimeException {
+        public DuplicateFieldException(String message) {
+            super(message);
+        }
+    }
 }

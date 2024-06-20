@@ -20,14 +20,8 @@ public class StudentController {
     }
 
     @PostMapping("/add/student")
-    public ResponseEntity<String> addStudent(@RequestBody DataUsersDto dto){
-        try{
-            addStudentServices.insertStudent(dto);
-            return ResponseEntity.ok().body("Student added successfully");
-        } catch (Exception e){
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body("An error occured while adding student");
-        }
+    public ResponseEntity<?> addStudent(@RequestBody DataUsersDto dto){
+       return addStudentServices.insertStudent(dto);
     }
 
     @PostMapping("/add/student/nota")
