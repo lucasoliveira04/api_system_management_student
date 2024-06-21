@@ -6,49 +6,60 @@ import org.springframework.stereotype.Service;
 public class MainRegex {
 
     public static class mainApplicationRegex {
-        public <T> T apply(T column, T value) {
-            switch (column.toString()) {
+        private String value;
+
+        public <T> void apply(String type, T value) {
+            switch (type) {
                 case "cpf":
                     CpfRegex cpfRegex = new CpfRegex();
                     String formattedCpf = cpfRegex.formatCpf((String) value);
                     if (cpfRegex.applyRegex(formattedCpf)) {
-                        return (T) formattedCpf;
+                        this.value = formattedCpf;
                     } else {
                         throw new IllegalArgumentException("Cpf inválido");
                     }
+                    break;
                 case "rg":
                     RgxRegex rgRegex = new RgxRegex();
                     String formattedRg = rgRegex.formatRg((String) value);
                     if (rgRegex.applyRegex(formattedRg)) {
-                        return (T) formattedRg;
+                        this.value = formattedRg;
                     } else {
                         throw new IllegalArgumentException("Rg inválido");
                     }
+                    break;
                 case "name":
                     NameRegex nameRegex = new NameRegex();
                     if (nameRegex.applyRegex((String) value)) {
-                        return (T) value;
+                        this.value = (String) value;
                     } else {
                         throw new IllegalArgumentException("Nome inválido");
                     }
+                    break;
                 case "email":
                     EmailRegex emailRegex = new EmailRegex();
                     if (emailRegex.applyRegex((String) value)) {
-                        return (T) value;
+                        this.value = (String) value;
                     } else {
                         throw new IllegalArgumentException("Email inválido");
                     }
+                    break;
                 case "nota":
                     NotaRegex notaRegex = new NotaRegex();
-                    Double parseNota = notaRegex.parseNota((String) value);
-                    if (parseNota != null && notaRegex.applyRegex(parseNota)){
-                        return (T) parseNota;
+                    Double parsedNota = notaRegex.parseNota((String) value);
+                    if (parsedNota != null && notaRegex.applyRegex(parsedNota)) {
+                        this.value = parsedNota.toString();
                     } else {
-                        throw new IllegalArgumentException("Nota invalida");
+                        throw new IllegalArgumentException("Nota inválida");
                     }
+                    break;
                 default:
-                    return column;
+                    throw new IllegalArgumentException("Tipo inválido");
             }
+        }
+
+        public String getValue() {
+            return this.value;
         }
     }
 
@@ -90,7 +101,6 @@ public class MainRegex {
             String patternName = "^[A-Za-zÀ-ÖØ-öø-ÿ\\s]+$";
             return column.matches(patternName);
         }
-
     }
 
     static class EmailRegex implements RegexColumnInterface<String> {
@@ -110,9 +120,9 @@ public class MainRegex {
         }
 
         public Double parseNota(String nota) {
-            try{
+            try {
                 return Double.parseDouble(nota);
-            } catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 return null;
             }
         }
