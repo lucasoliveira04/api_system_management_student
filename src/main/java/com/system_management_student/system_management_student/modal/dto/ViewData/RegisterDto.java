@@ -21,6 +21,7 @@ import java.util.Date;
 public class RegisterDto implements Serializable {
     private Long id;
     private String email;
+    private String username;
     private String password;
     private LocalDateTime dateRegister;
 
@@ -30,6 +31,7 @@ public class RegisterDto implements Serializable {
                 .email(register.getEmail())
                 .password(register.getPassword())
                 .dateRegister(register.getDateRegister())
+                .username(register.getUsername())
                 .build();
     }
 }
