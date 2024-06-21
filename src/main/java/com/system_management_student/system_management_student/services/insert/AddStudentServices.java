@@ -95,21 +95,21 @@ public class AddStudentServices {
     private String formattedValidatedCpf(String cpf) {
         MainRegex.mainApplicationRegex cpfRegex = new MainRegex.mainApplicationRegex();
         cpfRegex.apply("cpf", cpf);
-        return cpfRegex.toString();
+        return cpfRegex.getValue();
     }
     private String formattedValidatedRg(String rg) {
         MainRegex.mainApplicationRegex rgRegex = new MainRegex.mainApplicationRegex();
         rgRegex.apply("rg", rg);
-        return rgRegex.toString();
+        return rgRegex.getValue();
     }
     private String formattedValidateName(String name){
         MainRegex.mainApplicationRegex nameRegex = new MainRegex.mainApplicationRegex();
         nameRegex.apply("name", name);
-        return nameRegex.toString();
+        return nameRegex.getValue();
     }
     private String formattedValueValidateEmail(String email){
         MainRegex.mainApplicationRegex emailRegex = new MainRegex.mainApplicationRegex();
         emailRegex.apply("email", email);
-        return emailRegex.toString();
+        return emailRegex.getValue();
     }
 }
