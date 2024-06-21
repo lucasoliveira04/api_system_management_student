@@ -42,7 +42,7 @@ public class DataStudentsDto implements Serializable {
                 .nota_4(students.getNota_4())
                 .nota_5(students.getNota_5())
                 .mean_result_final(students.getMean_result_final())
-                .result(students.getResult())
+                .result(students.getMeanResult())
                 .date_insert_nota(students.getDate_insert_nota())
                 .bimestre(students.getBimestre())
                 .ano(students.getAno())
