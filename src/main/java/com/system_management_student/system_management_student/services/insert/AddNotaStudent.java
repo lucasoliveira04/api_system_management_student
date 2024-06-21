@@ -6,6 +6,7 @@ import com.system_management_student.system_management_student.modal.entity.Data
 import com.system_management_student.system_management_student.modal.repository.DataStudentsRepository;
 import com.system_management_student.system_management_student.modal.repository.DataUsersRepository;
 import com.system_management_student.system_management_student.services.pattern.ID.GeneratorId;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,12 +22,17 @@ public class AddNotaStudent {
         this.dataStudentsRepository = dataStudentsRepository;
     }
 
-    public void insertNotaStudent(DataStudentsDto dataStudentsDto) {
-        int currentYear = LocalDateTime.now().getYear();
-        verificBimestre(dataStudentsDto, currentYear);
+    public ResponseEntity<String> insertNotaStudent(DataStudentsDto dataStudentsDto) {
+        try{
+            int currentYear = LocalDateTime.now().getYear();
+            verificBimestre(dataStudentsDto, currentYear);
 
-        DataStudents students = getDataStudents(dataStudentsDto, currentYear);
-        dataStudentsRepository.save(students);
+            DataStudents students = getDataStudents(dataStudentsDto, currentYear);
+            dataStudentsRepository.save(students);
+            return ResponseEntity.ok().body("Nota inserida com sucesso");
+        } catch (RuntimeException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     private DataStudents getDataStudents(DataStudentsDto dto, int currentYear) {
@@ -45,9 +51,9 @@ public class AddNotaStudent {
         students.setMean_result_final(mean);
 
         if (students.getMean_result_final() <= 7) {
-            students.setResult("Reprovado");
+            students.setMeanResult("Reprovado");
         } else {
-            students.setResult("Aprovado");
+            students.setMeanResult("Aprovado");
         }
 
         Optional<DataUsers> optionalDataUsers = dataUsersRepository.findById(Math.toIntExact(dto.getStudentId()));
