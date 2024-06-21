@@ -6,39 +6,49 @@ import org.springframework.stereotype.Service;
 public class MainRegex {
 
     public static class mainApplicationRegex {
-        public <T> T apply(T column, String value) {
-            if (column.equals("cpf")) {
-                CpfRegex cpfRegex = new CpfRegex();
-                String formattedValue = cpfRegex.formatCpf(value);
-                if (cpfRegex.applyRegex(formattedValue)) {
-                    return (T) formattedValue;
-                } else {
-                    throw new IllegalArgumentException("Cpf inválido");
-                }
-            } else if (column.equals("rg")) {
-                RgxRegex rgRegex = new RgxRegex();
-                String formattedValue = rgRegex.formatRg(value);
-                if (rgRegex.applyRegex(formattedValue)) {
-                    return (T) formattedValue;
-                } else {
-                    throw new IllegalArgumentException("Rg inválido");
-                }
-            } else if (column.equals("name")) {
-                NameRegex nameRegex = new NameRegex();
-                if (nameRegex.applyRegex(value)) {
-                    return (T) value;
-                } else {
-                    throw new IllegalArgumentException("Nome inválido");
-                }
-            } else if (column.equals("email")) {
-                EmailRegex emailRegex = new EmailRegex();
-                if (emailRegex.applyRegex(value)) {
-                    return (T) value;
-                } else {
-                    throw new IllegalArgumentException("Email inválido");
-                }
+        public <T> T apply(T column, T value) {
+            switch (column.toString()) {
+                case "cpf":
+                    CpfRegex cpfRegex = new CpfRegex();
+                    String formattedCpf = cpfRegex.formatCpf((String) value);
+                    if (cpfRegex.applyRegex(formattedCpf)) {
+                        return (T) formattedCpf;
+                    } else {
+                        throw new IllegalArgumentException("Cpf inválido");
+                    }
+                case "rg":
+                    RgxRegex rgRegex = new RgxRegex();
+                    String formattedRg = rgRegex.formatRg((String) value);
+                    if (rgRegex.applyRegex(formattedRg)) {
+                        return (T) formattedRg;
+                    } else {
+                        throw new IllegalArgumentException("Rg inválido");
+                    }
+                case "name":
+                    NameRegex nameRegex = new NameRegex();
+                    if (nameRegex.applyRegex((String) value)) {
+                        return (T) value;
+                    } else {
+                        throw new IllegalArgumentException("Nome inválido");
+                    }
+                case "email":
+                    EmailRegex emailRegex = new EmailRegex();
+                    if (emailRegex.applyRegex((String) value)) {
+                        return (T) value;
+                    } else {
+                        throw new IllegalArgumentException("Email inválido");
+                    }
+                case "nota":
+                    NotaRegex notaRegex = new NotaRegex();
+                    Double parseNota = notaRegex.parseNota((String) value);
+                    if (parseNota != null && notaRegex.applyRegex(parseNota)){
+                        return (T) parseNota;
+                    } else {
+                        throw new IllegalArgumentException("Nota invalida");
+                    }
+                default:
+                    return column;
             }
-            return column;
         }
     }
 
@@ -91,8 +101,24 @@ public class MainRegex {
             return column.matches(patternEmail);
         }
     }
+
+    static class NotaRegex implements RegexColumnInterface<Double> {
+
+        @Override
+        public boolean applyRegex(Double column) {
+            return column >= 0 && column <= 10;
+        }
+
+        public Double parseNota(String nota) {
+            try{
+                return Double.parseDouble(nota);
+            } catch (NumberFormatException e){
+                return null;
+            }
+        }
+    }
 }
 
 interface RegexColumnInterface<T> {
-    boolean applyRegex(String column);
+    boolean applyRegex(T column);
 }

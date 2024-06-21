@@ -18,7 +18,9 @@ public class DataStudents {
     private Double nota_4;
     private Double nota_5;
     private Double mean_result_final;
-    private String result;
+
+    @Column(name = "mean_result")
+    private String meanResult;
     private LocalDateTime date_insert_nota;
     private int bimestre;
     private Integer ano;
