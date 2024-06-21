@@ -25,13 +25,7 @@ public class StudentController {
     }
 
     @PostMapping("/add/student/nota")
-    public ResponseEntity<String> addNota(@RequestBody DataStudentsDto dto){
-        try{
-            addNotaStudent.insertNotaStudent(dto);
-            return ResponseEntity.ok().body("Nota added successfully");
-        } catch (Exception e){
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body("An error occured while adding student");
-        }
+    public ResponseEntity<?> addNota(@RequestBody DataStudentsDto dto){
+        return addNotaStudent.insertNotaStudent(dto);
     }
 }
