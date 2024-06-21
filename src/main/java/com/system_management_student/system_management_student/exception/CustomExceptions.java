@@ -12,4 +12,8 @@ public class CustomExceptions {
             super(message);
         }
     }
+
+    public static class InvalidLoginException extends RuntimeException {
+        public InvalidLoginException(String message) {}
+    }
 }

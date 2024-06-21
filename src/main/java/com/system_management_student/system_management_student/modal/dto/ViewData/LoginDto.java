@@ -19,12 +19,14 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LoginDto implements Serializable {
     private Long id;
+    private String token;
     private LocalDateTime dateLogin;
 
     public static LoginDto fromLoginDto(Login loginDto) {
         return LoginDto.builder()
                 .id(loginDto.getId())
                 .dateLogin(loginDto.getDateLogin())
+                .token(loginDto.getToken())
                 .build();
     }
 }

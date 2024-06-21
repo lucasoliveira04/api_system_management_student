@@ -13,6 +13,8 @@ public class Login {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String token;
+
     @Column(name = "date_login")
     private LocalDateTime dateLogin;
 
