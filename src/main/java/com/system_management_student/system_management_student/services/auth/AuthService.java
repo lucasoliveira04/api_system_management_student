@@ -1,7 +1,6 @@
-package com.system_management_student.system_management_student.services.insert;
+package com.system_management_student.system_management_student.services.auth;
 
 import com.system_management_student.system_management_student.exception.CustomExceptions;
-import com.system_management_student.system_management_student.modal.dto.ViewData.DataUsersDto;
 import com.system_management_student.system_management_student.modal.dto.ViewData.LoginDto;
 import com.system_management_student.system_management_student.modal.entity.DataUsers;
 import com.system_management_student.system_management_student.modal.entity.Login;
