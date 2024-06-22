@@ -2,6 +2,7 @@ package com.system_management_student.system_management_student.controller;
 
 import com.system_management_student.system_management_student.modal.dto.ViewData.DataUsersDto;
 import com.system_management_student.system_management_student.modal.dto.ViewData.LoginDto;
+import com.system_management_student.system_management_student.modal.entity.DataUsers;
 import com.system_management_student.system_management_student.modal.entity.Register;
 import com.system_management_student.system_management_student.services.auth.AuthService;
 import com.system_management_student.system_management_student.services.recuperar_senha.RecuperarSenhaService;
@@ -39,6 +40,17 @@ public class AuthController {
     public ResponseEntity<?> recuperarSenha(@RequestBody DataUsersDto request){
         ResponseEntity<String> response = recuperarSenhaService.recuperarSenha(request);
         return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
+    }
+
+    @GetMapping("/return/data-user/{id}")
+    public ResponseEntity<?> returnDataUser(@PathVariable Long id){
+        LoginDto loginDto = authService.getLoginInfo(id);
+
+        if (loginDto != null){
+            return ResponseEntity.ok().body(loginDto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 

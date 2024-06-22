@@ -1,6 +1,7 @@
 package com.system_management_student.system_management_student.services.auth;
 
 import com.system_management_student.system_management_student.exception.CustomExceptions;
+import com.system_management_student.system_management_student.modal.dto.ViewData.DataUsersDto;
 import com.system_management_student.system_management_student.modal.dto.ViewData.LoginDto;
 import com.system_management_student.system_management_student.modal.entity.DataUsers;
 import com.system_management_student.system_management_student.modal.entity.Login;
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class AuthService {
@@ -48,5 +50,18 @@ public class AuthService {
 
         return null;
     }
+
+    public LoginDto getLoginInfo(Long userId){
+        Optional<Login> loginOptional = loginRepository.findById(userId);
+        if (loginOptional.isPresent()) {
+            Login login = loginOptional.get();
+            return LoginDto.fromLoginDto(login);
+        } else {
+            return null;
+        }
+    }
+
+
+
 }
 
