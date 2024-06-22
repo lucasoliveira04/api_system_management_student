@@ -28,30 +28,46 @@ public class DataUsersDto implements Serializable {
     private RegisterDto registerDto;
     private List<DataStudentsDto> dataStudentsDto;
     private List<LoginDto> loginDto;
+    private Integer loginCount;
+    private LoginDto lastLogin;
+    private String typeUser;
 
     public static DataUsersDto fromEntity(DataUsers dataUsers) {
         if (dataUsers == null) {
             return null;
         }
+
+        List<LoginDto> loginDtos = dataUsers.getLogins() != null ?
+                dataUsers.getLogins().stream()
+                        .map(LoginDto::fromLoginDto)
+                        .collect(Collectors.toList()) : null;
+        LoginDto lastLoginDto = loginDtos != null && !loginDtos.isEmpty() ?
+                loginDtos.get(loginDtos.size() - 1) : null;
+
+        boolean isHashUsername = dataUsers.getRegister() != null && dataUsers.getRegister().getUsername() != null;
+
+       String typeUser = isHashUsername ? "admin" : "student";
+
         return DataUsersDto.builder()
                 .id(dataUsers.getId())
+                .typeUser(typeUser)
                 .name(dataUsers.getName())
                 .email(dataUsers.getEmail())
                 .rg(dataUsers.getRg())
                 .cpf(dataUsers.getCpf())
                 .dateOfBirth(dataUsers.getDateOfBirth())
+
                 .registerDto(dataUsers.getRegister() != null ?
                         RegisterDto.fromEntity(dataUsers.getRegister()) : null)
-                .dataStudentsDto(dataUsers.getStudents() != null ?
-                        dataUsers.getStudents()
-                                .stream()
+
+                .dataStudentsDto(!isHashUsername && dataUsers.getStudents() != null ?
+                        dataUsers.getStudents().stream()
                                 .map(DataStudentsDto::fromEntity)
-                                .collect(Collectors.toList()) : null)
-                .loginDto(dataUsers.getLogins() != null ?
-                        dataUsers.getLogins()
-                                .stream()
-                                .map(LoginDto::fromLoginDto)
-                                .collect(Collectors.toList()) : null)
+                                .collect(Collectors.toList()) : null
+                )
+
+                .loginCount(loginDtos != null ? loginDtos.size() : 0)
+                .lastLogin(lastLoginDto)
                 .build();
     }
 }

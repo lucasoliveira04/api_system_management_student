@@ -15,6 +15,7 @@ public class UserController {
         this.addUserService = addUserService;
     }
 
+
     @PostMapping("/add/user")
     public ResponseEntity<?> addUser(@RequestBody UserRegistrationRequest request){
         return addUserService.insertUser(request.getDataUsersDto(), request.getRegisterDto());

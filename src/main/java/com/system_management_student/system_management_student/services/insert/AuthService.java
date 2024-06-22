@@ -1,7 +1,9 @@
 package com.system_management_student.system_management_student.services.insert;
 
 import com.system_management_student.system_management_student.exception.CustomExceptions;
+import com.system_management_student.system_management_student.modal.dto.ViewData.DataUsersDto;
 import com.system_management_student.system_management_student.modal.dto.ViewData.LoginDto;
+import com.system_management_student.system_management_student.modal.entity.DataUsers;
 import com.system_management_student.system_management_student.modal.entity.Login;
 import com.system_management_student.system_management_student.modal.entity.Register;
 import com.system_management_student.system_management_student.modal.repository.LoginRepository;
@@ -31,12 +33,13 @@ public class AuthService {
             Register register = registerRepository.findRegisterByUsername(username);
 
             if (register != null && passwordEncoder.matches(password, register.getPassword())) {
+                DataUsers dataUsers = register.getUser();
                 Login login = new Login();
                 login.setDateLogin(LocalDateTime.now());
                 String token = jwtFilter.generateToken(username);
                 login.setToken(token);
+                login.setId_user(dataUsers);
                 loginRepository.save(login);
-
                 return LoginDto.fromLoginDto(login);
             }
 
