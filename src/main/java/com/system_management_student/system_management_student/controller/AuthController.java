@@ -23,16 +23,13 @@ public class AuthController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> login(@RequestBody Register request){
-        String username = request.getUsername();
-        String password = request.getPassword();
+    public ResponseEntity<DataUsersDto> login(@RequestBody Register request){
+        DataUsersDto dataUsersDto = authService.getAuth(request.getUsername(), request.getPassword());
 
-        LoginDto auth = authService.getAuth(username, password);
-
-        if (auth != null){
-            return ResponseEntity.ok().body(auth.getToken());
+        if (dataUsersDto != null) {
+            return ResponseEntity.ok(dataUsersDto);
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.status(401).build();
         }
     }
 
@@ -41,17 +38,4 @@ public class AuthController {
         ResponseEntity<String> response = recuperarSenhaService.recuperarSenha(request);
         return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     }
-
-    @GetMapping("/return/data-user/{id}")
-    public ResponseEntity<?> returnDataUser(@PathVariable Long id){
-        LoginDto loginDto = authService.getLoginInfo(id);
-
-        if (loginDto != null){
-            return ResponseEntity.ok().body(loginDto);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-
 }

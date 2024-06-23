@@ -29,7 +29,7 @@ public class AuthService {
         this.jwtFilter = jwtFilter;
     }
 
-    public LoginDto getAuth(String username, String password) {
+    public DataUsersDto getAuth(String username, String password) {
         try {
             Register register = registerRepository.findRegisterByUsername(username);
 
@@ -41,7 +41,10 @@ public class AuthService {
                 login.setToken(token);
                 login.setId_user(dataUsers);
                 loginRepository.save(login);
-                return LoginDto.fromLoginDto(login);
+
+                DataUsersDto dataUsersDto = DataUsersDto.fromEntityLogin(dataUsers);
+                dataUsersDto.setLastLogin(LoginDto.fromEntity(login));
+                return dataUsersDto;
             }
 
         } catch (CustomExceptions.InvalidLoginException e) {
@@ -50,18 +53,4 @@ public class AuthService {
 
         return null;
     }
-
-    public LoginDto getLoginInfo(Long userId){
-        Optional<Login> loginOptional = loginRepository.findById(userId);
-        if (loginOptional.isPresent()) {
-            Login login = loginOptional.get();
-            return LoginDto.fromLoginDto(login);
-        } else {
-            return null;
-        }
-    }
-
-
-
 }
-

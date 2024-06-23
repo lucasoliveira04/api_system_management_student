@@ -18,7 +18,7 @@ public class ViewDataLogin {
 
     public List<LoginDto> getAllDadsLogin(){
         return loginRepository.findAll().stream()
-                .map(LoginDto::fromLoginDto)
+                .map(LoginDto::fromEntity)
                 .collect(Collectors.toList());
     }
 }
