@@ -88,6 +88,8 @@ public class DataUsersDto implements Serializable {
                 .rg(dataUsers.getRg())
                 .cpf(dataUsers.getCpf())
                 .dateOfBirth(dataUsers.getDateOfBirth())
+                .registerDto(dataUsers.getRegister() != null ?
+                        RegisterDto.fromEntityLogin(dataUsers.getRegister()) : null)
                 .loginCount(loginDtos != null ? loginDtos.size() : 0)
                 .lastLogin(lastLoginDto)
                 .build();

@@ -5,15 +5,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.system_management_student.system_management_student.modal.entity.Register;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Value;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
-/**
- * DTO for {@link com.system_management_student.system_management_student.modal.entity.Register}
- */
 @Data
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -24,12 +19,21 @@ public class RegisterDto implements Serializable {
     private String username;
     private String password;
     private LocalDateTime dateRegister;
+    private String newPassword;
 
     public static RegisterDto fromEntity(Register register){
         return RegisterDto.builder()
                 .id(register.getId())
                 .email(register.getEmail())
                 .password(register.getPassword())
+                .dateRegister(register.getDateRegister())
+                .username(register.getUsername())
+                .build();
+    }
+
+    public static RegisterDto fromEntityLogin(Register register){
+        return RegisterDto.builder()
+                .id(register.getId())
                 .dateRegister(register.getDateRegister())
                 .username(register.getUsername())
                 .build();

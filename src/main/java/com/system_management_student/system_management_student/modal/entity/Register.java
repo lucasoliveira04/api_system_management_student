@@ -3,9 +3,7 @@ package com.system_management_student.system_management_student.modal.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.math.BigInteger;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Data
