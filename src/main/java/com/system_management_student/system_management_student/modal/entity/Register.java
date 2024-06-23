@@ -23,6 +23,15 @@ public class Register {
     @Column(name = "date_register")
     private LocalDateTime dateRegister;
 
+    @Column(name = "limit_password")
+    private Integer limitPassword;
+
+    @Column(name = "last_password_change")
+    private LocalDateTime lastPasswordChange;
+
+    @Column(name = "password_change_count")
+    private Integer passwordChangeCount;
+
     @OneToOne
     @JoinColumn(name = "id_user", referencedColumnName = "id")
     private DataUsers user;

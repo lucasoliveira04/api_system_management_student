@@ -20,6 +20,8 @@ public class RegisterDto implements Serializable {
     private String password;
     private LocalDateTime dateRegister;
     private String newPassword;
+    private int limitPassword;
+
 
     public static RegisterDto fromEntity(Register register){
         return RegisterDto.builder()
