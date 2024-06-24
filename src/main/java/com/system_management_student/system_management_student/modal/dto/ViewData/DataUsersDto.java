@@ -28,6 +28,7 @@ public class DataUsersDto implements Serializable {
     private LoginDto lastLogin;
     private String typeUser;
 
+
     public static DataUsersDto fromEntity(DataUsers dataUsers) {
         if (dataUsers == null) {
             return null;
@@ -58,8 +59,6 @@ public class DataUsersDto implements Serializable {
                         dataUsers.getStudents().stream()
                                 .map(DataStudentsDto::fromEntity)
                                 .collect(Collectors.toList()) : null)
-                .loginDto(loginDtos)
-                .loginCount(loginDtos != null ? loginDtos.size() : 0)
                 .lastLogin(lastLoginDto)
                 .build();
     }

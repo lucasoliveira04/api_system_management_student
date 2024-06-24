@@ -15,6 +15,8 @@ public class Login {
 
     private String token;
 
+    private Date tokenExpirationDate;
+
     @Column(name = "date_login")
     private LocalDateTime dateLogin;
 

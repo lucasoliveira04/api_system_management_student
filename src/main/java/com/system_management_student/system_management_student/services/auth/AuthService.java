@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -39,8 +40,14 @@ public class AuthService {
                 login.setDateLogin(LocalDateTime.now());
                 String token = jwtFilter.generateToken(username);
                 login.setToken(token);
+
+                Date tokenExpirationDate = jwtFilter.getExpirationDateFromToken(token);
+                login.setTokenExpirationDate(tokenExpirationDate);
+
                 login.setId_user(dataUsers);
                 loginRepository.save(login);
+
+
 
                 DataUsersDto dataUsersDto = DataUsersDto.fromEntityLogin(dataUsers);
                 dataUsersDto.setLastLogin(LoginDto.fromEntity(login));
@@ -51,6 +58,14 @@ public class AuthService {
             e.getMessage();
         }
 
+        return null;
+    }
+
+    public DataUsersDto getUserDataByUsername(String username) {
+        Register register = registerRepository.findRegisterByUsername(username);
+        if (register != null){
+            return DataUsersDto.fromEntity(register.getUser());
+        }
         return null;
     }
 }

@@ -1,11 +1,9 @@
 package com.system_management_student.system_management_student.services.recuperar_senha;
 
 import com.system_management_student.system_management_student.modal.dto.ViewData.DataUsersDto;
-import com.system_management_student.system_management_student.modal.dto.ViewData.RegisterDto;
 import com.system_management_student.system_management_student.modal.entity.DataUsers;
 import com.system_management_student.system_management_student.modal.entity.Register;
 import com.system_management_student.system_management_student.modal.repository.DataUsersRepository;
-import org.springframework.cglib.core.Local;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

@@ -5,6 +5,7 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.security.Key;
+import java.util.Calendar;
 import java.util.Date;
 
 @Service
@@ -25,27 +27,34 @@ public class JwtFilter extends OncePerRequestFilter {
     @Value("${jwt.secretKey}")
     private String secretKey;
 
+    private Key key;
+
+    @PostConstruct
+    public void init() {
+        this.key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        try{
+        try {
             String token = extractTokenFromRequest(request);
 
-            if (token != null && validateToken(token)){
-                Claims claims = Jwts.parserBuilder().setSigningKey(getSecretKey()).build().parseClaimsJws(token).getBody();
+            if (token != null && validateToken(token)) {
+                Claims claims = Jwts.parserBuilder().setSigningKey(this.key).build().parseClaimsJws(token).getBody();
                 String username = claims.getSubject();
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, null);
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
-        } catch (JwtException e){
-            response.sendError(HttpStatus.UNAUTHORIZED.value(), "invalid token");;
+        } catch (JwtException e) {
+            response.sendError(HttpStatus.UNAUTHORIZED.value(), "Invalid token");
             return;
         }
         filterChain.doFilter(request, response);
     }
 
-    public String extractTokenFromRequest(HttpServletRequest request){
+    public String extractTokenFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")){
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }
         return null;
@@ -53,22 +62,28 @@ public class JwtFilter extends OncePerRequestFilter {
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder().setSigningKey(getSecretKey()).build().parseClaimsJws(token);
+            Jwts.parserBuilder().setSigningKey(this.key).build().parseClaimsJws(token);
             return true;
         } catch (JwtException e) {
             return false;
         }
     }
 
-    public Key getSecretKey() {
-        return Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    }
-
     public String generateToken(String username) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.YEAR, 1);
+        Date expirationDate = calendar.getTime();
+
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())
-                .signWith(getSecretKey())
+                .setExpiration(expirationDate)
+                .signWith(this.key)
                 .compact();
+    }
+
+    public Date getExpirationDateFromToken(String token) {
+        Claims claims = Jwts.parserBuilder().setSigningKey(this.key).build().parseClaimsJws(token).getBody();
+        return claims.getExpiration();
     }
 }

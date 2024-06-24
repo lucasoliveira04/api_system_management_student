@@ -38,4 +38,15 @@ public class AuthController {
         ResponseEntity<String> response = recuperarSenhaService.recuperarSenha(request);
         return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     }
+
+    @GetMapping("/user")
+    public ResponseEntity<DataUsersDto> getUserData(@RequestParam String username){
+        DataUsersDto usersDto = authService.getUserDataByUsername(username);
+
+        if (usersDto != null) {
+            return ResponseEntity.ok(usersDto);
+        } else {
+            return ResponseEntity.status(401).build();
+        }
+    }
 }

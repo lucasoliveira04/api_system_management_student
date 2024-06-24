@@ -8,6 +8,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @Builder
@@ -17,6 +18,8 @@ public class LoginDto implements Serializable {
     private Long id;
     private String token;
     private LocalDateTime dateLogin;
+    private Date tokenExpirationDate;
+
 
     public static LoginDto fromEntity(Login login) {
         if (login == null) {
@@ -27,6 +30,7 @@ public class LoginDto implements Serializable {
                 .id(login.getId())
                 .token(login.getToken())
                 .dateLogin(login.getDateLogin())
+                .tokenExpirationDate(login.getTokenExpirationDate())
                 .build();
     }
 }
