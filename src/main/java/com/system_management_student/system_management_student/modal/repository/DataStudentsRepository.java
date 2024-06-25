@@ -4,9 +4,12 @@ import com.system_management_student.system_management_student.modal.entity.Data
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface DataStudentsRepository extends JpaRepository<DataStudents, Long> {
     Optional<DataStudents> findByStudentIdAndBimestreAndAno(Long studentId, Integer bimestre, Integer ano);
+
+    List<DataStudents> findByStudentIdAndAno(long studentId, int currentYear);
 }

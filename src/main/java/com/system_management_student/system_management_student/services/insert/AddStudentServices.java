@@ -51,7 +51,7 @@ public class AddStudentServices {
             // Salva o registro
             registerRepository.save(register);
 
-            return ResponseEntity.ok().body("Estudante inserido com sucesso!");
+            return ResponseEntity.ok().body("Estudante inserido com sucesso! " + dto.getId());
         } catch (CustomExceptions.DuplicateFieldException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (IllegalArgumentException e) {

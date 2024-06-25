@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,14 +24,17 @@ public class AddNotaStudent {
     }
 
     public ResponseEntity<String> insertNotaStudent(DataStudentsDto dataStudentsDto) {
-        try{
+        try {
             int currentYear = LocalDateTime.now().getYear();
             verificBimestre(dataStudentsDto, currentYear);
 
             DataStudents students = getDataStudents(dataStudentsDto, currentYear);
             dataStudentsRepository.save(students);
+
+            updateAnnualMeanResult(dataStudentsDto.getStudentId(), currentYear);
+
             return ResponseEntity.ok().body("Nota inserida com sucesso");
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -39,22 +43,17 @@ public class AddNotaStudent {
         DataStudents students = new DataStudents();
         GeneratorId generatorId = new GeneratorId();
         students.setId(Long.valueOf(generatorId.MainGenerator("student")));
-        students.setNota_1(dto.getNota_1());
-        students.setNota_2(dto.getNota_2());
-        students.setNota_3(dto.getNota_3());
-        students.setNota_4(dto.getNota_4());
-        students.setNota_5(dto.getNota_5());
+        students.setNota_1(validatedNota(dto.getNota_1()));
+        students.setNota_2(validatedNota(dto.getNota_2()));
+        students.setNota_3(validatedNota(dto.getNota_3()));
+        students.setNota_4(validatedNota(dto.getNota_4()));
+        students.setNota_5(validatedNota(dto.getNota_5()));
         students.setBimestre(dto.getBimestre());
         students.setAno(currentYear);
 
         double mean = calcularMeanNota(students);
+        students.setMeanResult(String.valueOf(mean));
         students.setMean_result_final(mean);
-
-        if (students.getMean_result_final() <= 7) {
-            students.setMeanResult("Reprovado");
-        } else {
-            students.setMeanResult("Aprovado");
-        }
 
         Optional<DataUsers> optionalDataUsers = dataUsersRepository.findById(Math.toIntExact(dto.getStudentId()));
         if (optionalDataUsers.isPresent()) {
@@ -67,6 +66,13 @@ public class AddNotaStudent {
         return students;
     }
 
+    private double validatedNota(double nota) {
+        if (nota < 0 || nota > 10) {
+            throw new RuntimeException("Nota deve ser entre 0 e 10");
+        }
+        return nota;
+    }
+
     private void verificBimestre(DataStudentsDto dataStudentsDto, int currentYear) {
         Optional<DataStudents> existingRecord = dataStudentsRepository.findByStudentIdAndBimestreAndAno(
                 dataStudentsDto.getStudentId(),
@@ -76,6 +82,29 @@ public class AddNotaStudent {
 
         if (existingRecord.isPresent()) {
             throw new RuntimeException("O aluno já possui notas registradas para este bimestre e ano.");
+        }
+    }
+
+    private void updateAnnualMeanResult(long studentId, int currentYear) {
+        List<DataStudents> allBimestres = dataStudentsRepository.findByStudentIdAndAno(studentId, currentYear);
+
+        if (allBimestres.size() < 4) {
+            return;
+        }
+
+        double sum = 0;
+        for (DataStudents bimestre : allBimestres) {
+            sum += Double.parseDouble(bimestre.getMeanResult());
+        }
+
+        double annualMean = sum / 4;
+
+        String meanResultFinal = annualMean >= 7 ? "Aprovado" : "Reprovado";
+
+        for (DataStudents bimestre : allBimestres) {
+            bimestre.setMean_result_final(annualMean);
+            bimestre.setMeanResult(meanResultFinal);
+            dataStudentsRepository.save(bimestre);
         }
     }
 
