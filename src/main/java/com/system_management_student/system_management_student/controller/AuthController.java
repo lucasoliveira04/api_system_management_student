@@ -57,16 +57,22 @@ public class AuthController {
     }
     @GetMapping("/verify-token")
     public ResponseEntity<?> verifyToken(HttpServletRequest request){
-        String token = request.getHeader("Authorization");
-        if (token != null && token.startsWith("Bearer ")) {
-            token = token.substring(7);
+        try {
+            String token = request.getHeader("Authorization");
+            if (token != null && token.startsWith("Bearer ")) {
+                token = token.substring(7);
+            }
+
+            boolean isValid = jwtFilter.validateToken(token);
+
+            if (isValid) {
+                return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.status(401).body("Token invalido");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body(e.getMessage());
         }
 
-        boolean isValid = jwtFilter.validateToken(token);
-        if (isValid) {
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.status(401).build();
-        }
     }
 }
