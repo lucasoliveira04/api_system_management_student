@@ -10,6 +10,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,6 +26,8 @@ import java.util.Date;
 
 @Service
 public class JwtFilter extends OncePerRequestFilter {
+    private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
+
     @Value("${jwt.secretKey}")
     private String secretKey;
 
@@ -44,21 +48,24 @@ public class JwtFilter extends OncePerRequestFilter {
                 String username = claims.getSubject();
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, null);
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                logger.info("Token validado para usuario: " + username);
             }
         } catch (JwtException e) {
             response.sendError(HttpStatus.UNAUTHORIZED.value(), "Invalid token");
+            logger.error("Erro ao validar token Bearer: {}", e.getMessage());
             return;
         }
         filterChain.doFilter(request, response);
     }
 
-    public String extractTokenFromRequest(HttpServletRequest request) {
+    private String extractTokenFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }
         return null;
     }
+
 
     public boolean validateToken(String token) {
         try {
