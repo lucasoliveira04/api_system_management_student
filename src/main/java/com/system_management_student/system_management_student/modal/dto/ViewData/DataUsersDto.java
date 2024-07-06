@@ -93,4 +93,18 @@ public class DataUsersDto implements Serializable {
                 .lastLogin(lastLoginDto)
                 .build();
     }
+
+    public static DataUsersDto fromEntityHistoricoEscolar(DataUsers dataUsers){
+        return DataUsersDto.builder()
+                .name(dataUsers.getName())
+                .rg(dataUsers.getRg())
+                .cpf(dataUsers.getCpf())
+                .email(dataUsers.getEmail())
+                .dataStudentsDto(
+                        dataUsers.getStudents().stream()
+                                .map(DataStudentsDto::fromEntity)
+                                .collect(Collectors.toList())
+                )
+                .build();
+    }
 }
